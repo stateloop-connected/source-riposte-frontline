@@ -1,0 +1,100 @@
+{
+  "aliases": {
+    "google-fonts": ".packaging/google-fonts",
+    "index.html": "dist/riposte-frontline.html"
+  },
+  "gameplay_or_asset_changes": false,
+  "google_fonts_selfhost": {
+    "families": [
+      {
+        "family": "Barlow Condensed",
+        "source": "ofl/barlowcondensed/OFL.txt",
+        "spdx": "OFL-1.1"
+      },
+      {
+        "family": "Saira Stencil One",
+        "source": "ofl/sairastencilone/OFL.txt",
+        "spdx": "OFL-1.1"
+      }
+    ],
+    "font_files": 15,
+    "google_fonts_commit": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0",
+    "helper": "google-fonts-selfhost.py",
+    "stylesheets": [
+      {
+        "local": ".packaging/google-fonts/f8202ee09b98c8c5.css",
+        "sha256": "cfa0978eabf5251dd85e43aebddd6ddc78ebb50991719315120fe26c00cf93e7",
+        "url": "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Saira+Stencil+One&display=swap"
+      }
+    ],
+    "total_font_bytes": 221984,
+    "version": 1
+  },
+  "include": [
+    "deck",
+    "favicon.ico",
+    "icons",
+    "manifest.webmanifest",
+    "maps",
+    "menu-theme.mp3",
+    "robots.txt",
+    "sfx",
+    "sitemap.xml",
+    "tex",
+    "version.json"
+  ],
+  "mode": "static",
+  "omitted_from_output": {
+    "riposte-frontline.html": "Shipped as index.html instead (the detector's entrypoint), with the self-hosted Google Fonts rewrite.",
+    "sw.js": "Its activate handler deletes every Cache Storage entry on the origin that is not its own, which would wipe other games' caches on the shared play origin. The page registers it with .catch(()=>{}), so a 404 is harmless."
+  },
+  "output": "build",
+  "reasons": [
+    "The repository commits its built game in dist/ (python3 build.py); the build copies it byte for byte into build/ with the game page as index.html, without sw.js, plus LICENSE and NOTICE.md.",
+    "Google Fonts are self-hosted in the output copy only (exact Google files, licences in google-fonts/licenses)."
+  ],
+  "remaining_risks": [
+    "PeerJS 1.5.5 loads from cdn.jsdelivr.net (SRI-pinned) on every page load; online play uses 0.peerjs.com.",
+    "Absolute /api/*, /version.json and /_vercel/insights/script.js requests target the author's server; on the play origin they resolve inside this build (404 for the API and analytics)."
+  ],
+  "repository": "BenDBSS/Riposte-Frontline-Source",
+  "rewrites": [
+    {
+      "after_sha256": "d4b909a04bd80f48a595f5ef8f58e122a858220b194bb2bc237f59b61cc495fc",
+      "before_sha256": "cded70f6c6f9c8ffa7aa9009174dd17036441e521c7cc7f4f0b3e89cb37087ae",
+      "path": "index.html",
+      "replace": [
+        [
+          "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n",
+          ""
+        ],
+        [
+          "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n",
+          ""
+        ],
+        [
+          "<link href=\"https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Saira+Stencil+One&display=swap\" rel=\"stylesheet\">",
+          "<link href=\"google-fonts/f8202ee09b98c8c5.css\" rel=\"stylesheet\">"
+        ],
+        [
+          "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",
+          "style-src 'self' 'unsafe-inline';"
+        ],
+        [
+          "font-src https://fonts.gstatic.com;",
+          "font-src 'self';"
+        ]
+      ],
+      "source": "dist/riposte-frontline.html"
+    }
+  ],
+  "root_files": [
+    "LICENSE",
+    "NOTICE.md"
+  ],
+  "schema_version": 1,
+  "source_root": "dist",
+  "status": "packaging_ready",
+  "upstream_code_executed_locally": false,
+  "upstream_sha": "31ca050d8ce59f4885c01a3237f68cdf186c9b60"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "riposte-frontline",
+  "version": "5.6.0",
+  "private": true,
+  "scripts": {
+    "build": "node .packaging/build.cjs"
+  }
+}
